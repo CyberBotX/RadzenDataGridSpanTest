@@ -1,0 +1,23 @@
+@inherits LayoutComponentBase
+
+<PageTitle>RadzenDataGrid Span Test</PageTitle>
+
+<RadzenLayout>
+	<RadzenHeader>
+		<RadzenStack AlignItems="AlignItems.Center" Gap="0" Orientation="Orientation.Horizontal">
+			<RadzenSidebarToggle Click="@(() => this.sidebarExpanded = !this.sidebarExpanded)" />
+			<RadzenLabel Text="QCP Tools" />
+		</RadzenStack>
+	</RadzenHeader>
+	<RadzenSidebar @bind-Expanded="this.sidebarExpanded">
+		<NavMenu />
+	</RadzenSidebar>
+	<RadzenBody>
+		@this.Body
+	</RadzenBody>
+</RadzenLayout>
+
+@code
+{
+	bool sidebarExpanded = true;
+}

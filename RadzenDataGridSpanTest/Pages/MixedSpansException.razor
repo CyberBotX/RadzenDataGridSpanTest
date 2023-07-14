@@ -1,0 +1,273 @@
+@page "/MixedSpansException"
+
+<h3>Mixed Spans Exception</h3>
+
+<h4>How it should look:</h4>
+<table class="native">
+	<tr>
+		<td colspan="5" rowspan="2">*</td>
+		<td colspan="2">*</td>
+	</tr>
+	<tr>
+		<td colspan="2">*</td>
+	</tr>
+	<tr>
+		<td colspan="2" rowspan="2">*</td>
+		<td>*</td>
+		<td colspan="2" rowspan="2">*</td>
+		<td colspan="2">*</td>
+	</tr>
+	<tr>
+		<td>*</td>
+		<td colspan="2">*</td>
+	</tr>
+	<tr>
+		<td>*</td>
+		<td>*</td>
+		<td>*</td>
+		<td>*</td>
+		<td>*</td>
+		<td>*</td>
+		<td>*</td>
+	</tr>
+</table>
+
+<h4>RadzenDataGrid with no gaps in data:</h4>
+<RadzenDataGridCommon Columns="this.columns" Data="this.rowsNoGaps" />
+
+<h4>RadzenDataGrid with gaps in data:</h4>
+<RadzenDataGridCommon Columns="this.columns" Data="this.rowsGaps" />
+
+@code
+{
+	List<string> columns = new() { "A", "B", "C", "D", "E", "F", "G" };
+	List<Row> rowsNoGaps = new()
+	{
+		new()
+		{
+			RowNumber = 1,
+			Cells = new()
+			{
+				["A"] = new()
+				{
+					Value = "*",
+					Columns = 5,
+					Rows = 2
+				},
+				["B"] = new()
+				{
+					Columns = 5,
+					Rows = 2,
+					Ignore = true
+				},
+				["C"] = new()
+				{
+					Columns = 5,
+					Rows = 2,
+					Ignore = true
+				},
+				["D"] = new()
+				{
+					Columns = 5,
+					Rows = 2,
+					Ignore = true
+				},
+				["E"] = new()
+				{
+					Columns = 5,
+					Rows = 2,
+					Ignore = true
+				},
+				["F"] = new()
+				{
+					Value = "*",
+					Columns = 2
+				},
+				["G"] = new()
+				{
+					Columns = 2,
+					Ignore = true
+				}
+			}
+		},
+		new()
+		{
+			RowNumber = 2,
+			Cells = new()
+			{
+				["A"] = new()
+				{
+					Columns = 5,
+					Rows = 2,
+					Ignore = true
+				},
+				["B"] = new()
+				{
+					Columns = 5,
+					Rows = 2,
+					Ignore = true
+				},
+				["C"] = new()
+				{
+					Columns = 5,
+					Rows = 2,
+					Ignore = true
+				},
+				["D"] = new()
+				{
+					Columns = 5,
+					Rows = 2,
+					Ignore = true
+				},
+				["E"] = new()
+				{
+					Columns = 5,
+					Rows = 2,
+					Ignore = true
+				},
+				["F"] = new()
+				{
+					Value = "*",
+					Columns = 2
+				},
+				["G"] = new()
+				{
+					Columns = 2,
+					Ignore = true
+				}
+			}
+		},
+		new()
+		{
+			RowNumber = 3,
+			Cells = new()
+			{
+				["A"] = new()
+				{
+					Value = "*",
+					Columns = 2,
+					Rows = 2
+				},
+				["B"] = new()
+				{
+					Columns = 2,
+					Rows = 2,
+					Ignore = true
+				},
+				["C"] = new()
+				{
+					Value = "*"
+				},
+				["D"] = new()
+				{
+					Value = "*",
+					Columns = 2,
+					Rows = 2
+				},
+				["E"] = new()
+				{
+					Columns = 2,
+					Rows = 2,
+					Ignore = true
+				},
+				["F"] = new()
+				{
+					Value = "*",
+					Columns = 2
+				},
+				["G"] = new()
+				{
+					Columns = 2,
+					Ignore = true
+				}
+			}
+		},
+		new()
+		{
+			RowNumber = 4,
+			Cells = new()
+			{
+				["A"] = new()
+				{
+					Columns = 2,
+					Rows = 2,
+					Ignore = true
+				},
+				["B"] = new()
+				{
+					Columns = 2,
+					Rows = 2,
+					Ignore = true
+				},
+				["C"] = new()
+				{
+					Value = "*"
+				},
+				["D"] = new()
+				{
+					Columns = 2,
+					Rows = 2,
+					Ignore = true
+				},
+				["E"] = new()
+				{
+					Columns = 2,
+					Rows = 2,
+					Ignore = true
+				},
+				["F"] = new()
+				{
+					Value = "*",
+					Columns = 2
+				},
+				["G"] = new()
+				{
+					Columns = 2,
+					Ignore = true
+				}
+			}
+		},
+		new()
+		{
+			RowNumber = 5,
+			Cells = new()
+			{
+				["A"] = new()
+				{
+					Value = "*"
+				},
+				["B"] = new()
+				{
+					Value = "*"
+				},
+				["C"] = new()
+				{
+					Value = "*"
+				},
+				["D"] = new()
+				{
+					Value = "*"
+				},
+				["E"] = new()
+				{
+					Value = "*"
+				},
+				["F"] = new()
+				{
+					Value = "*"
+				},
+				["G"] = new()
+				{
+					Value = "*"
+				}
+			}
+		}
+	};
+	List<Row> rowsGaps;
+
+	public MixedSpansException() => this.rowsGaps = this.rowsNoGaps.Select(r => new Row
+	{
+		RowNumber = r.RowNumber,
+		Cells = r.Cells.Where(kvp => !kvp.Value.Ignore).ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
+	}).ToList();
+}

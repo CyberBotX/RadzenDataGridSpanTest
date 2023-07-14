@@ -1,0 +1,42 @@
+<RadzenDataGrid AllowAlternatingRows="false" AllowVirtualization="true" CellRender="RadzenDataGridCommon.CellRender" Data="this.Data"
+	GridLines="DataGridGridLines.Both">
+	<Columns>
+		@foreach (string column in this.Columns)
+		{
+			<RadzenDataGridColumn Property="@column" TextAlign="TextAlign.Center" TItem="Row" Title="@column">
+				<Template>
+					@if (context[column] is Cell cell)
+					{
+						<span title="@context.CellContent(column)">
+							@context.CellContent(column)
+						</span>
+					}
+				</Template>
+			</RadzenDataGridColumn>
+		}
+	</Columns>
+</RadzenDataGrid>
+
+
+@code
+{
+	[EditorRequired]
+	[Parameter]
+	public List<string> Columns { get; set; } = null!;
+
+	[EditorRequired]
+	[Parameter]
+	public List<Row> Data { get; set; } = null!;
+
+	static void CellRender(DataGridCellRenderEventArgs<Row> args)
+	{
+		var cell = args.Data[args.Column.Property];
+		if (cell is not null && !cell.Ignore)
+		{
+			if (cell.RowSpan != 1)
+				args.Attributes["rowspan"] = cell.RowSpan;
+			if (cell.ColSpan != 1)
+				args.Attributes["colspan"] = cell.ColSpan;
+		}
+	}
+}
