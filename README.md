@@ -11,4 +11,4 @@ Included in the repository are the following examples:
   * A more simple example of the above that contains as small a possibility of showing the exception
   * A small example that is similar to the first in this group but only has a few cells with colspan or rowspan on them
 
-This repository is to be used in a bug report to Radzen regarding the above issues.
+This repository is to be used in a bug report to Radzen regarding the above issues, being tracked at [Issue #1064](https://github.com/radzenhq/radzen-blazor/issues/1064) in Radzen Blazor's GitHub repo.
